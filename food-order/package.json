@@ -1,5 +1,5 @@
 {
-  "homepage":"https://github.com/ChengLiangcl/react-project.git",
+  "homepage":"https://ChengLiangcl/github.io/react-project",
   "name": "food-order",
   "version": "0.1.0",
   "private": true,
@@ -17,8 +17,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
