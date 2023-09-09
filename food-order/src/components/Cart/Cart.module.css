@@ -19,6 +19,12 @@
   text-align: right;
 }
 
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .actions button {
   font: inherit;
   cursor: pointer;
