@@ -10,9 +10,13 @@
 
 .modal {
   position: fixed;
-  top: 20vh;
+  top: 5%;
+  /* Adjust the top position as needed */
   left: 5%;
   width: 90%;
+  max-height: 90%;
+  /* Adjust the maximum height as needed */
+  overflow-y: auto;
   background-color: white;
   padding: 1rem;
   border-radius: 14px;
@@ -33,6 +37,7 @@
     opacity: 0;
     transform: translateY(-3rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -16,7 +16,11 @@ const MealItem = (props) => {
   };
 
   const removeFromCart = (amount) => {
-    cartContex.cartFormRemove({ amount: amount, id: props.id });
+    cartContex.cartFormRemove({
+      amount: amount,
+      id: props.id,
+      price: props?.price,
+    });
   };
 
   return (

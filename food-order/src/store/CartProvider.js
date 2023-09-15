@@ -7,7 +7,31 @@ const defaultCartState = {
 };
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updateItems = state.items.concat(action?.item);
+    /**
+     * Initial check the items have been added or not, if yes it will return the index
+     */
+
+    const existItemIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
+
+    const existItem = state.items[existItemIndex];
+    let updateItems;
+
+    /**
+     * If item has been added, set the update Items
+     */
+    if (existItem) {
+      let updateItem = {
+        ...existItem,
+        amount: existItem.amount + action.item.amount,
+      };
+
+      updateItems = [...state.items];
+      updateItems[existItemIndex] = updateItem;
+    } else {
+      updateItems = state.items.concat(action?.item);
+    }
     const updateTotal = state.total + action.item.price * action.item.amount;
 
     return {
@@ -16,23 +40,45 @@ const cartReducer = (state, action) => {
     };
   }
 
-  if (action.type == "CARTREMOVE") {
-    const removeItemId = action.removeTotal.id;
-    const removeParticularId = state.items?.filter((item) => {
-      return item.id === removeItemId;
+  if (action.type === "CARTREMOVE") {
+    let deletedItem = state.items.find((item) => {
+      return item.id === action.removeTotal.id;
     });
-    const removeTotalAmount = action.removeTotal.amount;
+
+    let notDelteItem = state.items.filter((item) => {
+      return item.id !== action.removeTotal.id;
+    });
+
     /**
-     * Remove item from the cart form when click No button
+     * If find the delete item index exist, the remove the item from the shopping cart
+     *
      */
-    removeParticularId.splice(removeParticularId.length - removeTotalAmount);
-    const filterItem = state.items?.filter((item) => {
-      return item.id !== removeItemId;
-    });
-    const updateItems = filterItem.concat(removeParticularId);
-    return {
-      items: updateItems,
-    };
+    if (
+      typeof deletedItem !== "undefined" &&
+      typeof notDelteItem !== "undefined" &&
+      deletedItem?.amount - action.removeTotal.amount >= 0
+    ) {
+      let updateDeletedItem = {
+        ...deletedItem,
+        amount: deletedItem?.amount - action.removeTotal.amount,
+      };
+      /**
+       * Update delete amount from the cart
+       */
+
+      const updateTotal =
+        state.total - action.removeTotal.price * action.removeTotal.amount;
+
+      return {
+        items: [...notDelteItem, updateDeletedItem],
+        total: updateTotal,
+      };
+    } else {
+      return {
+        items: state?.items,
+        total: state?.total,
+      };
+    }
   }
   return defaultCartState;
 };
@@ -53,6 +99,7 @@ const CartProvider = (props) => {
   };
 
   const removeItem = (id) => {};
+
   const cartContext = {
     items: cartState.items,
     total: cartState.total,
